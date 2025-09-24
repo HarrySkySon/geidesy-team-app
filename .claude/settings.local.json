@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(unzip:*)",
+      "Bash(mkdir:*)",
+      "Bash(tree:*)",
+      "Bash(git --version)",
+      "Bash(gh:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(git init:*)",
+      "Bash(git remote add:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

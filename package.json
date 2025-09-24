@@ -1,0 +1,94 @@
+{
+  "name": "geodesy-team-app",
+  "version": "1.0.0",
+  "description": "Система управління геодезичними бригадами",
+  "main": "index.js",
+  "scripts": {
+    "dev": "docker-compose up -d",
+    "dev:logs": "docker-compose logs -f",
+    "dev:down": "docker-compose down",
+    "dev:clean": "docker-compose down -v --remove-orphans",
+    
+    "backend:dev": "cd backend && npm run dev",
+    "backend:test": "cd backend && npm test",
+    "backend:build": "cd backend && npm run build",
+    
+    "frontend:dev": "cd frontend && npm start",
+    "frontend:test": "cd frontend && npm test",
+    "frontend:build": "cd frontend && npm run build",
+    
+    "mobile:dev": "cd mobile && npm start",
+    "mobile:android": "cd mobile && npm run android",
+    "mobile:ios": "cd mobile && npm run ios",
+    "mobile:test": "cd mobile && npm test",
+    
+    "db:migrate": "cd backend && npx prisma migrate dev",
+    "db:seed": "cd backend && npx prisma db seed",
+    "db:studio": "cd backend && npx prisma studio",
+    "db:reset": "cd backend && npx prisma migrate reset",
+    
+    "setup": "npm run setup:backend && npm run setup:frontend && npm run setup:mobile",
+    "setup:backend": "cd backend && npm install",
+    "setup:frontend": "cd frontend && npm install", 
+    "setup:mobile": "cd mobile && npm install",
+    
+    "lint": "npm run lint:backend && npm run lint:frontend && npm run lint:mobile",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "lint:mobile": "cd mobile && npm run lint",
+    
+    "test": "npm run test:backend && npm run test:frontend && npm run test:mobile",
+    "test:backend": "cd backend && npm run test",
+    "test:frontend": "cd frontend && npm run test",
+    "test:mobile": "cd mobile && npm run test",
+    
+    "build": "npm run build:backend && npm run build:frontend",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    
+    "deploy:staging": "scripts/deploy/deploy.sh staging",
+    "deploy:production": "scripts/deploy/deploy.sh production",
+    
+    "backup:db": "scripts/backup/db-backup.sh",
+    "backup:files": "scripts/backup/files-backup.sh",
+    
+    "docs:serve": "docsify serve docs",
+    "docs:api": "cd backend && npm run docs:generate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-org/geodesy-team-app.git"
+  },
+  "keywords": [
+    "geodesy",
+    "team-management",
+    "gps-tracking",
+    "field-work",
+    "surveying",
+    "geospatial",
+    "react",
+    "react-native",
+    "nodejs",
+    "postgresql",
+    "postgis"
+  ],
+  "author": "Geodesy Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/your-org/geodesy-team-app/issues"
+  },
+  "homepage": "https://github.com/your-org/geodesy-team-app#readme",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "mobile"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "docsify-cli": "^4.4.4"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}

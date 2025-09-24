@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  # PostgreSQL з PostGIS для геопросторових даних
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: geodesy_postgres
+    environment:
+      POSTGRES_DB: geodesy_db
+      POSTGRES_USER: geodesy_user
+      POSTGRES_PASSWORD: geodesy_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schemas:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - geodesy_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U geodesy_user -d geodesy_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis для кешування та сесій
+  redis:
+    image: redis:7-alpine
+    container_name: geodesy_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - geodesy_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # Backend API сервер
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: geodesy_backend
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://geodesy_user:geodesy_password@postgres:5432/geodesy_db
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: your_jwt_secret_change_in_production
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - geodesy_network
+    develop:
+      watch:
+        - action: sync
+          path: ./backend/src
+          target: /app/src
+        - action: rebuild
+          path: ./backend/package.json
+
+  # Frontend веб-додаток
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: geodesy_frontend
+    environment:
+      REACT_APP_API_URL: http://localhost:3000/api
+      REACT_APP_WS_URL: ws://localhost:3000
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - geodesy_network
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/src
+          target: /app/src
+
+  # MinIO для файлового сховища (альтернатива AWS S3)
+  minio:
+    image: minio/minio:latest
+    container_name: geodesy_minio
+    environment:
+      MINIO_ROOT_USER: geodesy_minio
+      MINIO_ROOT_PASSWORD: geodesy_minio_password
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - geodesy_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  # Nginx для reverse proxy та статичних файлів
+  nginx:
+    image: nginx:alpine
+    container_name: geodesy_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/development/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - geodesy_network
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  minio_data:
+    driver: local
+
+networks:
+  geodesy_network:
+    driver: bridge
