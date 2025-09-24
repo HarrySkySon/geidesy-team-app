@@ -1,7 +1,7 @@
 {
-  "name": "geodesy-team-app",
+  "name": "surveying-team-app",
   "version": "1.0.0",
-  "description": "Система управління геодезичними бригадами",
+  "description": "Surveying Team Management System",
   "main": "index.js",
   "scripts": {
     "dev": "docker-compose up -d",
@@ -57,27 +57,30 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-org/geodesy-team-app.git"
+    "url": "git+https://github.com/HarrySkySon/geidesy-team-app.git"
   },
   "keywords": [
+    "surveying",
     "geodesy",
     "team-management",
     "gps-tracking",
     "field-work",
-    "surveying",
     "geospatial",
+    "mapping",
     "react",
     "react-native",
     "nodejs",
     "postgresql",
-    "postgis"
+    "postgis",
+    "real-time",
+    "offline-sync"
   ],
-  "author": "Geodesy Team",
+  "author": "Surveying Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/your-org/geodesy-team-app/issues"
+    "url": "https://github.com/HarrySkySon/geidesy-team-app/issues"
   },
-  "homepage": "https://github.com/your-org/geodesy-team-app#readme",
+  "homepage": "https://github.com/HarrySkySon/geidesy-team-app#readme",
   "workspaces": [
     "backend",
     "frontend",

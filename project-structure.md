@@ -1,28 +1,28 @@
-# Структура проєкту
+# Project Structure
 
 ```
 geidesy-team-app/
 │
-├── README.md                           # Головна документація проєкту
-├── .gitignore                         # Git ignore файл
-├── docker-compose.yml                 # Docker Compose для розробки
-├── package.json                       # Root package.json для scripts
+├── README.md                           # Main project documentation
+├── .gitignore                         # Git ignore file
+├── docker-compose.yml                 # Docker Compose for development
+├── package.json                       # Root package.json for scripts
 │
 ├── backend/                           # Backend API (Node.js + TypeScript)
 │   ├── src/
-│   │   ├── controllers/               # HTTP контролери
+│   │   ├── controllers/               # HTTP controllers
 │   │   │   ├── auth.controller.ts
 │   │   │   ├── tasks.controller.ts
 │   │   │   ├── teams.controller.ts
 │   │   │   ├── users.controller.ts
 │   │   │   └── reports.controller.ts
-│   │   ├── services/                  # Бізнес логіка
+│   │   ├── services/                  # Business logic
 │   │   │   ├── auth.service.ts
 │   │   │   ├── tasks.service.ts
 │   │   │   ├── teams.service.ts
 │   │   │   ├── sync.service.ts
 │   │   │   └── notification.service.ts
-│   │   ├── models/                    # Prisma моделі та типи
+│   │   ├── models/                    # Prisma models and types
 │   │   │   ├── index.ts
 │   │   │   └── types.ts
 │   │   ├── middleware/                # Express middleware
@@ -30,7 +30,7 @@ geidesy-team-app/
 │   │   │   ├── validation.middleware.ts
 │   │   │   ├── error.middleware.ts
 │   │   │   └── rate-limit.middleware.ts
-│   │   ├── routes/                    # API роути
+│   │   ├── routes/                    # API routes
 │   │   │   ├── auth.routes.ts
 │   │   │   ├── tasks.routes.ts
 │   │   │   ├── teams.routes.ts
@@ -40,18 +40,18 @@ geidesy-team-app/
 │   │   │   ├── index.ts
 │   │   │   ├── task.handlers.ts
 │   │   │   └── location.handlers.ts
-│   │   ├── utils/                     # Утилітарні функції
+│   │   ├── utils/                     # Utility functions
 │   │   │   ├── logger.ts
 │   │   │   ├── geo.utils.ts
 │   │   │   ├── file.utils.ts
 │   │   │   └── validation.ts
-│   │   ├── types/                     # TypeScript типи
+│   │   ├── types/                     # TypeScript types
 │   │   │   ├── api.types.ts
 │   │   │   ├── auth.types.ts
 │   │   │   └── database.types.ts
 │   │   ├── app.ts                     # Express app configuration
 │   │   └── server.ts                  # Server entry point
-│   ├── tests/                         # Тести
+│   ├── tests/                         # Tests
 │   │   ├── unit/
 │   │   ├── integration/
 │   │   └── e2e/
@@ -66,13 +66,13 @@ geidesy-team-app/
 │
 ├── frontend/                          # Web Frontend (React.js)
 │   ├── src/
-│   │   ├── components/                # Переспроектні компоненти
+│   │   ├── components/                # Reusable components
 │   │   │   ├── common/
 │   │   │   ├── forms/
 │   │   │   ├── maps/
 │   │   │   ├── dashboard/
 │   │   │   └── layout/
-│   │   ├── pages/                     # Сторінки додатка
+│   │   ├── pages/                     # Application pages
 │   │   │   ├── Dashboard/
 │   │   │   ├── Tasks/
 │   │   │   ├── Teams/
@@ -83,7 +83,7 @@ geidesy-team-app/
 │   │   │   ├── slices/
 │   │   │   ├── api/
 │   │   │   └── index.ts
-│   │   ├── services/                  # API сервіси
+│   │   ├── services/                  # API services
 │   │   │   ├── api.service.ts
 │   │   │   ├── auth.service.ts
 │   │   │   ├── tasks.service.ts
@@ -92,15 +92,15 @@ geidesy-team-app/
 │   │   │   ├── useAuth.ts
 │   │   │   ├── useWebSocket.ts
 │   │   │   └── useGeolocation.ts
-│   │   ├── utils/                     # Утилітарні функції
+│   │   ├── utils/                     # Utility functions
 │   │   │   ├── formatters.ts
 │   │   │   ├── validators.ts
 │   │   │   └── constants.ts
-│   │   ├── types/                     # TypeScript типи
+│   │   ├── types/                     # TypeScript types
 │   │   │   ├── api.types.ts
 │   │   │   ├── store.types.ts
 │   │   │   └── component.types.ts
-│   │   ├── styles/                    # CSS/SCSS файли
+│   │   ├── styles/                    # CSS/SCSS files
 │   │   │   ├── globals.css
 │   │   │   ├── variables.css
 │   │   │   └── components/
@@ -118,7 +118,7 @@ geidesy-team-app/
 │
 ├── mobile/                            # Mobile App (React Native)
 │   ├── src/
-│   │   ├── screens/                   # Екрани додатка
+│   │   ├── screens/                   # App screens
 │   │   │   ├── Home/
 │   │   │   ├── Tasks/
 │   │   │   ├── TaskDetails/
@@ -126,20 +126,20 @@ geidesy-team-app/
 │   │   │   ├── Maps/
 │   │   │   ├── Profile/
 │   │   │   └── Auth/
-│   │   ├── components/                # Компоненти
+│   │   ├── components/                # Components
 │   │   │   ├── common/
 │   │   │   ├── forms/
 │   │   │   ├── maps/
 │   │   │   └── camera/
-│   │   ├── navigation/                # Навігаційна структура
+│   │   ├── navigation/                # Navigation structure
 │   │   │   ├── AppNavigator.tsx
 │   │   │   ├── AuthNavigator.tsx
 │   │   │   └── TabNavigator.tsx
-│   │   ├── database/                  # WatermelonDB моделі
+│   │   ├── database/                  # WatermelonDB models
 │   │   │   ├── models/
 │   │   │   ├── schema.ts
 │   │   │   └── index.ts
-│   │   ├── services/                  # API та утилітарні сервіси
+│   │   ├── services/                  # API and utility services
 │   │   │   ├── api.service.ts
 │   │   │   ├── sync.service.ts
 │   │   │   ├── location.service.ts
@@ -149,12 +149,12 @@ geidesy-team-app/
 │   │   │   ├── auth/
 │   │   │   ├── tasks/
 │   │   │   └── index.ts
-│   │   ├── utils/                     # Допоміжні функції
+│   │   ├── utils/                     # Helper functions
 │   │   │   ├── permissions.ts
 │   │   │   ├── storage.ts
 │   │   │   ├── formatters.ts
 │   │   │   └── constants.ts
-│   │   ├── types/                     # TypeScript типи
+│   │   ├── types/                     # TypeScript types
 │   │   ├── App.tsx
 │   │   └── index.ts
 │   ├── android/                       # Android specific files
@@ -164,21 +164,21 @@ geidesy-team-app/
 │   ├── metro.config.js
 │   └── react-native.config.js
 │
-├── database/                          # База даних
-│   ├── migrations/                    # SQL міграції
+├── database/                          # Database
+│   ├── migrations/                    # SQL migrations
 │   │   ├── 001_initial_schema.sql
 │   │   ├── 002_add_geospatial.sql
 │   │   └── 003_add_indexes.sql
-│   ├── seeds/                         # Тестові дані
+│   ├── seeds/                         # Test data
 │   │   ├── users.sql
 │   │   ├── teams.sql
 │   │   └── sample_data.sql
-│   └── schemas/                       # Схеми БД
+│   └── schemas/                       # DB schemas
 │       ├── tables.sql
 │       ├── indexes.sql
 │       └── triggers.sql
 │
-├── docker/                           # Docker конфігурації
+├── docker/                           # Docker configurations
 │   ├── development/
 │   │   ├── docker-compose.yml
 │   │   ├── postgres.dockerfile
@@ -188,7 +188,7 @@ geidesy-team-app/
 │       ├── nginx.conf
 │       └── ssl/
 │
-├── scripts/                          # Скрипти автоматизації
+├── scripts/                          # Automation scripts
 │   ├── deploy/
 │   │   ├── deploy.sh
 │   │   ├── rollback.sh
@@ -201,7 +201,7 @@ geidesy-team-app/
 │       ├── setup-monitoring.sh
 │       └── log-analyzer.sh
 │
-└── docs/                             # Документація
+└── docs/                             # Documentation
     ├── architecture/
     │   ├── system-architecture.md
     │   ├── database-design.md
@@ -212,7 +212,7 @@ geidesy-team-app/
     │   ├── authentication.md
     │   └── websocket-events.md
     ├── user-guides/
-    │   ├── manager-guide.md
+    │   ├── supervisor-guide.md
     │   ├── team-guide.md
     │   └── admin-guide.md
     ├── development/
@@ -226,42 +226,42 @@ geidesy-team-app/
         └── requirements.md
 ```
 
-## Опис ключових папок
+## Key Folder Descriptions
 
 ### Backend (`/backend`)
-- **Архітектура:** Clean Architecture з розділенням на шари
-- **ORM:** Prisma для роботи з PostgreSQL
-- **API:** RESTful API + WebSocket для real-time
-- **Тести:** Unit, Integration, E2E тести
+- **Architecture:** Clean Architecture with layer separation
+- **ORM:** Prisma for PostgreSQL operations
+- **API:** RESTful API + WebSocket for real-time
+- **Tests:** Unit, Integration, E2E tests
 
 ### Frontend (`/frontend`)
-- **Framework:** React.js з TypeScript
+- **Framework:** React.js with TypeScript
 - **State Management:** Redux Toolkit
 - **UI Library:** Material-UI
 - **Routing:** React Router v6
 
 ### Mobile (`/mobile`)
-- **Framework:** React Native з TypeScript
+- **Framework:** React Native with TypeScript
 - **Navigation:** React Navigation v6
-- **Local DB:** WatermelonDB для офлайн роботи
+- **Local DB:** WatermelonDB for offline operation
 - **State:** Context API + AsyncStorage
 
 ### Database (`/database`)
-- **СУБД:** PostgreSQL 14+ з PostGIS розширенням
-- **Міграції:** SQL файли для версіонування схеми
-- **Seeds:** Тестові дані для розробки
+- **DBMS:** PostgreSQL 14+ with PostGIS extension
+- **Migrations:** SQL files for schema versioning
+- **Seeds:** Test data for development
 
 ### Docker (`/docker`)
-- **Development:** Docker Compose для локальної розробки
-- **Production:** Оптимізовані контейнери для продакшен
+- **Development:** Docker Compose for local development
+- **Production:** Optimized containers for production
 
 ### Scripts (`/scripts`)
-- **Deploy:** Автоматизація розгортання
-- **Backup:** Резервне копіювання даних
-- **Monitoring:** Скрипти моніторингу
+- **Deploy:** Deployment automation
+- **Backup:** Data backup operations
+- **Monitoring:** Monitoring scripts
 
 ### Docs (`/docs`)
-- **Architecture:** Технічна документація системи
-- **API:** Документація REST API та WebSocket
-- **User Guides:** Інструкції для користувачів
-- **Development:** Документація для розробників
+- **Architecture:** Technical system documentation
+- **API:** REST API and WebSocket documentation
+- **User Guides:** Instructions for users
+- **Development:** Documentation for developers

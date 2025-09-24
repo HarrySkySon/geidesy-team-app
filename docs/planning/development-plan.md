@@ -1,109 +1,109 @@
-# План розробки системи управління геодезичними бригадами
+# Development Plan for Surveying Team Management System
 
-## Загальна стратегія
+## Overall Strategy
 
-Проєкт буде реалізований за методологією **Agile/Scrum** з 2-тижневими спринтами та поетапним впровадженням функціональності.
+The project will be implemented using **Agile/Scrum** methodology with 2-week sprints and phased deployment of functionality.
 
-## Milestone та фази розробки
+## Milestones and Development Phases
 
-### Фаза 1: MVP (8-12 тижнів) - Q1 2024
+### Phase 1: MVP (8-12 weeks) - Q1 2024
 
-**Мета:** Запуск базового функціонала для заміни Excel-таблиць
+**Goal:** Launch basic functionality to replace Excel spreadsheets
 
-#### Sprint 1-2: Інфраструктура та основи (4 тижні)
-- [ ] Налаштування розробницького середовища
-- [ ] Створення базової архітектури Backend API
-- [ ] Налаштування PostgreSQL + PostGIS
-- [ ] Базова автентифікація JWT
-- [ ] Docker конфігурація для dev/staging
+#### Sprint 1-2: Infrastructure and Foundation (4 weeks)
+- [ ] Development environment setup
+- [ ] Backend API basic architecture creation
+- [ ] PostgreSQL + PostGIS setup
+- [ ] Basic JWT authentication
+- [ ] Docker configuration for dev/staging
 
 **Deliverables:**
-- ✅ Функціональний Backend API з базовими ендпоінтами
-- ✅ База даних з основними таблицями
+- ✅ Functional Backend API with basic endpoints
+- ✅ Database with main tables
 - ✅ CI/CD pipeline setup
 
-#### Sprint 3-4: Backend Core (4 тижні)
-- [ ] CRUD операції для завдань, бригад, об'єктів
-- [ ] API для управління користувачами
-- [ ] Геопросторові запити (PostGIS)
-- [ ] WebSocket сервер для real-time
-- [ ] Базова авторизація (RBAC)
+#### Sprint 3-4: Backend Core (4 weeks)
+- [ ] CRUD operations for tasks, teams, sites
+- [ ] User management API
+- [ ] Geospatial queries (PostGIS)
+- [ ] WebSocket server for real-time
+- [ ] Basic authorization (RBAC)
 
 **Deliverables:**
-- ✅ Повнофункціональне API для управління завданнями
-- ✅ Real-time оновлення статусів
-- ✅ Геолокаційні сервіси
+- ✅ Fully functional task management API
+- ✅ Real-time status updates
+- ✅ Geolocation services
 
-#### Sprint 5-6: Web Frontend (4 тижні)
-- [ ] React.js проєкт з TypeScript
-- [ ] Сторінка автентифікації
-- [ ] Дашборд з картою та статистикою
-- [ ] Форми створення/редагування завдань
-- [ ] Управління бригадами
-
-**Deliverables:**
-- ✅ Функціональний веб-додаток для керівника
-- ✅ Інтерактивна карта з завданнями
-- ✅ Базова система звітності
-
-#### Sprint 7-8: Mobile App (4 тижні)
-- [ ] React Native проєкт setup
-- [ ] Автентифікація в мобільному додатку
-- [ ] Список завдань та деталі
-- [ ] GPS трекінг та навігація
-- [ ] Камера та фото-звіти
+#### Sprint 5-6: Web Frontend (4 weeks)
+- [ ] React.js project with TypeScript
+- [ ] Authentication page
+- [ ] Dashboard with map and statistics
+- [ ] Task creation/editing forms
+- [ ] Team management
 
 **Deliverables:**
-- ✅ Мобільний додаток для бригад
-- ✅ Базовий GPS трекінг
-- ✅ Можливість створення звітів
+- ✅ Functional web application for supervisors
+- ✅ Interactive map with tasks
+- ✅ Basic reporting system
 
-### Фаза 2: Розширений функціонал (4-6 тижнів) - Q2 2024
+#### Sprint 7-8: Mobile App (4 weeks)
+- [ ] React Native project setup
+- [ ] Mobile app authentication
+- [ ] Task list and details
+- [ ] GPS tracking and navigation
+- [ ] Camera and photo reports
 
-#### Sprint 9-10: Офлайн та синхронізація (4 тижні)
-- [ ] WatermelonDB інтеграція
-- [ ] Офлайн режим мобільного додатка
-- [ ] Conflict resolution для синхронізації
+**Deliverables:**
+- ✅ Mobile app for field teams
+- ✅ Basic GPS tracking
+- ✅ Report creation capability
+
+### Phase 2: Extended Functionality (4-6 weeks) - Q2 2024
+
+#### Sprint 9-10: Offline and Synchronization (4 weeks)
+- [ ] WatermelonDB integration
+- [ ] Mobile app offline mode
+- [ ] Conflict resolution for synchronization
 - [ ] Background sync
-- [ ] Push-сповіщення (Firebase)
+- [ ] Push notifications (Firebase)
 
-#### Sprint 11-12: UX/UI поліпшення (4 тижні)
-- [ ] UI/UX редизайн на основі користувацького фідбеку
-- [ ] Поліпшена навігація та фільтри
-- [ ] Батч операції для масових змін
-- [ ] Експорт звітів (PDF/Excel)
-- [ ] Поліпшена аналітика
+#### Sprint 11-12: UX/UI Improvements (4 weeks)
+- [ ] UI/UX redesign based on user feedback
+- [ ] Enhanced navigation and filters
+- [ ] Batch operations for mass changes
+- [ ] Report export (PDF/Excel)
+- [ ] Enhanced analytics
 
 **Deliverables:**
-- ✅ Повнофункціональний офлайн режим
-- ✅ Поліпшений користувацький досвід
-- ✅ Система звітності та експорту
+- ✅ Fully functional offline mode
+- ✅ Improved user experience
+- ✅ Reporting and export system
 
-### Фаза 3: Додаткові функції (4-6 тижнів) - Q3 2024
+### Phase 3: Additional Features (4-6 weeks) - Q3 2024
 
-#### Sprint 13-14: Інтеграції та аналітика (4 тижні)
-- [ ] Інтеграція з зовнішніми картографічними сервісами
-- [ ] Розширена аналітика та метрики
-- [ ] Автоматизація маршрутів
-- [ ] Інтеграція з CAD системами (опціонально)
+#### Sprint 13-14: Integrations and Analytics (4 weeks)
+- [ ] Integration with external mapping services
+- [ ] Extended analytics and metrics
+- [ ] Route automation
+- [ ] CAD systems integration (optional)
 
-#### Sprint 15-16: Оптимізація та фінальні доробки (4 тижні)
-- [ ] Performance оптимізація
-- [ ] Security audit та тести
+#### Sprint 15-16: Optimization and Final Polish (4 weeks)
+- [ ] Performance optimization
+- [ ] Security audit and testing
 - [ ] Load testing
-- [ ] Документація для користувачів
-- [ ] Підготовка до production
+- [ ] User documentation
+- [ ] Production preparation
 
 **Deliverables:**
-- ✅ Production-ready система
-- ✅ Повна документація
-- ✅ Система моніторингу та алертів
+- ✅ Production-ready system
+- ✅ Complete documentation
+- ✅ Monitoring and alerting system
 
-## Ресурси та команда
+## Resources and Team
 
-### Склад команди
-| Роль | Кількість | Залученість |
-|------|-----------|-------------|
+### Team Composition
+| Role | Count | Involvement |
+|------|-------|-------------|
 | Project Manager | 1 | Full-time |
 | Backend Developer | 2 | Full-time |
 | Frontend Developer | 1 | Full-time |
@@ -112,96 +112,96 @@
 | QA Engineer | 1 | Full-time |
 | DevOps Engineer | 1 | Part-time (50%) |
 
-### Розподіл ролей по спринтах
+### Role Distribution by Sprints
 
 **Sprint 1-4 (Backend focus):**
-- Backend Developers: Основна розробка API
-- DevOps: Інфраструктура та CI/CD
-- PM: Планування та координація
+- Backend Developers: Main API development
+- DevOps: Infrastructure and CI/CD
+- PM: Planning and coordination
 
 **Sprint 5-8 (Frontend focus):**
-- Frontend Developer: Веб-додаток
-- Mobile Developer: React Native додаток  
-- UI/UX Designer: Дизайн інтерфейсів
-- Backend Developers: Підтримка API
+- Frontend Developer: Web application
+- Mobile Developer: React Native app  
+- UI/UX Designer: Interface design
+- Backend Developers: API support
 
 **Sprint 9-16 (Integration & Polish):**
-- Вся команда: Інтеграція та тестування
-- QA Engineer: Комплексне тестування
+- Full team: Integration and testing
+- QA Engineer: Comprehensive testing
 - DevOps: Production deployment
 
-## Критерії успіху для кожної фази
+## Success Criteria for Each Phase
 
 ### MVP Criteria
-- [ ] Керівник може створювати та призначати завдання
-- [ ] Бригади отримують завдання в мобільному додатку
-- [ ] GPS трекінг працює з точністю до 10 метрів
-- [ ] Базова система звітності функціонує
+- [ ] Supervisor can create and assign tasks
+- [ ] Teams receive tasks in mobile app
+- [ ] GPS tracking works with 10-meter accuracy
+- [ ] Basic reporting system functions
 - [ ] API response time < 500ms
 
 ### Extended Functionality Criteria  
-- [ ] Офлайн режим працює без втрати даних
-- [ ] Push-сповіщення доставляються за < 30 секунд
-- [ ] UI/UX отримав позитивний фідбек від 80% тестових користувачів
-- [ ] Експорт звітів працює для всіх форматів
+- [ ] Offline mode works without data loss
+- [ ] Push notifications delivered in < 30 seconds
+- [ ] UI/UX received positive feedback from 80% of test users
+- [ ] Report export works for all formats
 
 ### Production Readiness Criteria
-- [ ] API response time < 200ms для 95% запитів
+- [ ] API response time < 200ms for 95% requests
 - [ ] Uptime > 99.5%
-- [ ] Security audit пройдений без критичних вразливостей
-- [ ] Load testing пройдений для 100 одночасних користувачів
-- [ ] Повна документація та training матеріали готові
+- [ ] Security audit passed without critical vulnerabilities
+- [ ] Load testing passed for 100 concurrent users
+- [ ] Complete documentation and training materials ready
 
-## Ризики та мітігація
+## Risks and Mitigation
 
-### Технічні ризики
-| Ризик | Ймовірність | Вплив | Мітігація |
-|-------|-------------|--------|-----------|
-| GPS неточність | Medium | High | Використання кількох джерел позиціонування |
-| Офлайн синхронізація конфлікти | High | Medium | Протестованi conflict resolution алгоритми |
-| Performance issues | Medium | Medium | Раннє profiling та оптимізація |
+### Technical Risks
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| GPS inaccuracy | Medium | High | Use multiple positioning sources |
+| Offline sync conflicts | High | Medium | Tested conflict resolution algorithms |
+| Performance issues | Medium | Medium | Early profiling and optimization |
 
-### Проектні ризики
-| Ризик | Ймовірність | Вплив | Мітігація |
-|-------|-------------|--------|-----------|
-| Зміна вимог | High | Medium | Agile методологія, flexible architecture |
-| Затримка команди | Medium | High | Cross-training, backup планування |
-| Integration складності | Medium | Medium | Early prototyping, POC |
+### Project Risks
+| Risk | Probability | Impact | Mitigation |
+|------|-------------|--------|------------|
+| Changing requirements | High | Medium | Agile methodology, flexible architecture |
+| Team delays | Medium | High | Cross-training, backup planning |
+| Integration complexities | Medium | Medium | Early prototyping, POC |
 
-## Метрики та KPI
+## Metrics and KPIs
 
-### Технічні метрики
+### Technical Metrics
 - API Response Time (Target: < 200ms)
 - App Crash Rate (Target: < 0.1%)
 - Database Query Performance
 - Network Sync Success Rate (Target: > 99%)
 
-### Бізнес метрики
-- Час створення завдання (Target: зменшити на 50%)
-- Час звітності бригад (Target: зменшити на 60%)
-- Точність GPS даних (Target: < 5 метрів у 90% випадків)
-- User Adoption Rate (Target: 90% активних користувачів)
+### Business Metrics
+- Task creation time (Target: reduce by 50%)
+- Team reporting time (Target: reduce by 60%)
+- GPS data accuracy (Target: < 5 meters in 90% cases)
+- User Adoption Rate (Target: 90% active users)
 
 ## Definition of Done
 
-Для кожного sprint:
-- [ ] Всі User Stories виконані та протестовані
-- [ ] Code review пройдений
-- [ ] Unit tests покриття > 80%
-- [ ] Integration tests проходять
-- [ ] Документація оновлена
-- [ ] Demo готове для stakeholder
+For each sprint:
+- [ ] All User Stories completed and tested
+- [ ] Code review passed
+- [ ] Unit tests coverage > 80%
+- [ ] Integration tests passing
+- [ ] Documentation updated
+- [ ] Demo ready for stakeholders
 
-Для MVP:
-- [ ] Всі функції технічного завдання реалізовані
-- [ ] Performance критерії досягнуті
-- [ ] Security основи впроваджені
-- [ ] Базова документація готова
-- [ ] Staging environment готове для user testing
+For MVP:
+- [ ] All technical requirements implemented
+- [ ] Performance criteria achieved
+- [ ] Security basics implemented
+- [ ] Basic documentation ready
+- [ ] Staging environment ready for user testing
 
-Для Production:
-- [ ] Всі критерії MVP + Extended features
-- [ ] Production environment налаштоване
-- [ ] Monitoring та alerting активні
-- [ ] Backup стратегія впроваджена
-- [ ] User training завершено
+For Production:
+- [ ] All MVP + Extended features criteria
+- [ ] Production environment configured
+- [ ] Monitoring and alerting active
+- [ ] Backup strategy implemented
+- [ ] User training completed

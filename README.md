@@ -1,4 +1,4 @@
-# 🗺️ Система управління геодезичними бригадами
+# 🗺️ Surveying Team Management System
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
@@ -7,194 +7,194 @@
 [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/postgres-%23316192.svg?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
-> Сучасна цифрова платформа для ефективного управління та координації геодезичних бригад з GPS-трекінгом, real-time моніторингом та офлайн синхронізацією.
+> Modern digital platform for efficient management and coordination of surveying teams with GPS tracking, real-time monitoring, and offline synchronization.
 
-## 🎯 Опис проєкту
+## 🎯 Project Overview
 
-Комплексна система для координації роботи геодезичних бригад, що включає:
-- 📱 **Мобільний додаток** для польових команд (React Native)
-- 🖥️ **Веб-додаток** для керівника підрозділу (React.js)
-- ⚡ **Backend API** з real-time функціональністю (Node.js + TypeScript)
-- 🗄️ **Геопросторова база даних** (PostgreSQL + PostGIS)
+Comprehensive system for coordinating surveying team operations, including:
+- 📱 **Mobile Application** for field teams (React Native)
+- 🖥️ **Web Application** for supervisors (React.js)
+- ⚡ **Backend API** with real-time functionality (Node.js + TypeScript)
+- 🗄️ **Geospatial Database** (PostgreSQL + PostGIS)
 
-**Мета:** Заміна Excel-таблиць на професійну цифрову систему для управління до 20 геодезичних бригад з підвищенням ефективності координації на 30%.
+**Goal:** Replace Excel spreadsheets with a professional digital system for managing up to 20 surveying teams with 30% improved coordination efficiency.
 
-## Структура проєкту
+## Project Structure
 
 ```
 geidesy-team-app/
-├── backend/                    # Backend API сервер (Node.js + TypeScript)
-├── frontend/                   # Веб-додаток керівника (React.js)
-├── mobile/                     # Мобільний додаток бригад (React Native)
-├── database/                   # База даних та міграції (PostgreSQL + PostGIS)
-├── docker/                     # Docker конфігурації
-├── scripts/                    # Скрипти для автоматизації
-└── docs/                       # Документація
-    ├── architecture/           # Технічна архітектура
-    ├── api/                   # API документація
-    ├── user-guides/           # Інструкції користувача
-    ├── development/           # Документація розробки
-    └── planning/              # Планування проєкту
+├── backend/                    # Backend API server (Node.js + TypeScript)
+├── frontend/                   # Web application for supervisors (React.js)
+├── mobile/                     # Mobile app for teams (React Native)
+├── database/                   # Database and migrations (PostgreSQL + PostGIS)
+├── docker/                     # Docker configurations
+├── scripts/                    # Automation scripts
+└── docs/                       # Documentation
+    ├── architecture/           # Technical architecture
+    ├── api/                   # API documentation
+    ├── user-guides/           # User instructions
+    ├── development/           # Development documentation
+    └── planning/              # Project planning
 ```
 
-## ✨ Основні можливості
+## ✨ Key Features
 
-### 🖥️ Веб-додаток керівника
-- 📍 **Real-time дашборд** з інтерактивною картою активних завдань
-- 📊 **Аналітика продуктивності** бригад з візуалізацією метрик
-- 📋 **Управління завданнями** з автоматичним призначенням
-- 👥 **Координація бригад** та планування розкладу
-- 📈 **Звітність** з експортом у PDF/Excel форматі
-- 🔔 **Push-сповіщення** про статуси завдань
+### 🖥️ Web Application (Supervisor)
+- 📍 **Real-time dashboard** with interactive map of active tasks
+- 📊 **Performance analytics** with team productivity visualization
+- 📋 **Task management** with automatic assignment capabilities
+- 👥 **Team coordination** and schedule planning
+- 📈 **Reporting system** with PDF/Excel export functionality
+- 🔔 **Push notifications** for task status updates
 
-### 📱 Мобільний додаток бригад  
-- 📋 **Інтуїтивний список завдань** з пріоритизацією
-- 🗺️ **GPS навігація** до об'єктів з точністю до 5 метрів
-- 📸 **Фото-звіти** з автоматичними геотегами та часовими мітками
-- 🔄 **Офлайн режим** з автоматичною синхронізацією
-- ⚡ **Real-time оновлення** статусів завдань
-- 📍 **Автоматичний GPS трекінг** маршрутів
+### 📱 Mobile Application (Field Teams)  
+- 📋 **Intuitive task list** with prioritization
+- 🗺️ **GPS navigation** to sites with 5-meter accuracy
+- 📸 **Photo reports** with automatic geotagging and timestamps
+- 🔄 **Offline mode** with automatic synchronization
+- ⚡ **Real-time updates** of task statuses
+- 📍 **Automatic GPS tracking** of routes
 
-## Технологічний стек
+## Tech Stack
 
 ### Backend
-- **Мова:** Node.js + TypeScript
+- **Language:** Node.js + TypeScript
 - **Framework:** Express.js
-- **База даних:** PostgreSQL + PostGIS
+- **Database:** PostgreSQL + PostGIS
 - **ORM:** Prisma
-- **Кешування:** Redis
-- **Файли:** AWS S3 / MinIO
+- **Caching:** Redis
+- **Files:** AWS S3 / MinIO
 
 ### Frontend
 - **Framework:** React.js + TypeScript
 - **UI:** Material-UI
-- **Карти:** Leaflet
+- **Maps:** Leaflet
 - **State:** Redux Toolkit
 
 ### Mobile
 - **Framework:** React Native
-- **Навігація:** React Navigation
-- **Карти:** React Native Maps
-- **Офлайн:** WatermelonDB
+- **Navigation:** React Navigation
+- **Maps:** React Native Maps
+- **Offline:** WatermelonDB
 - **Push:** Firebase Cloud Messaging
 
 ### DevOps
-- **Контейнери:** Docker
+- **Containers:** Docker
 - **CI/CD:** GitHub Actions
-- **Моніторинг:** Prometheus + Grafana
+- **Monitoring:** Prometheus + Grafana
 
-## 🚀 Швидкий старт
+## 🚀 Quick Start
 
-### 📋 Системні вимоги
-- **Node.js** 18.0.0 або вище
-- **Docker** і **Docker Compose** для контейнеризації
-- **Git** для клонування репозиторію
-- **npm** або **yarn** для управління пакетами
+### 📋 System Requirements
+- **Node.js** 18.0.0 or higher
+- **Docker** and **Docker Compose** for containerization
+- **Git** for repository cloning
+- **npm** or **yarn** for package management
 
-### ⚡ Встановлення
+### ⚡ Installation
 
-1. **Клонування репозиторію**
+1. **Clone repository**
    ```bash
    git clone https://github.com/HarrySkySon/geidesy-team-app.git
    cd geidesy-team-app
    ```
 
-2. **Встановлення залежностей**
+2. **Install dependencies**
    ```bash
    npm run setup
    ```
 
-3. **Запуск середовища розробки**
+3. **Start development environment**
    ```bash
-   # Запуск всіх сервісів через Docker
+   # Start all services via Docker
    npm run dev
    
-   # Перегляд логів
+   # View logs
    npm run dev:logs
    ```
 
-4. **Ініціалізація бази даних**
+4. **Initialize database**
    ```bash
-   # Виконання міграцій
+   # Run migrations
    npm run db:migrate
    
-   # Заповнення тестовими даними
+   # Seed with test data
    npm run db:seed
    ```
 
-5. **Доступ до додатків**
-   - 🖥️ **Веб-додаток:** http://localhost:80
+5. **Access applications**
+   - 🖥️ **Web App:** http://localhost:80
    - ⚡ **API:** http://localhost:3000/api
    - 🗄️ **Prisma Studio:** `npm run db:studio`
    - 📦 **MinIO Console:** http://localhost:9001
 
-## 👥 Розробка
+## 👥 Development
 
-### 🏗️ Структура команди
-- **Project Manager:** 1 особа - координація та планування
-- **Backend Developer:** 1-2 особи - API та база даних
-- **Frontend Developer:** 1 особа - веб-інтерфейс
-- **Mobile Developer:** 1 особа - React Native додаток  
-- **UI/UX Designer:** 1 особа - дизайн інтерфейсів
-- **QA Engineer:** 1 особа - тестування та якість
+### 🏗️ Team Structure
+- **Project Manager:** 1 person - coordination and planning
+- **Backend Developer:** 1-2 people - API and database
+- **Frontend Developer:** 1 person - web interface
+- **Mobile Developer:** 1 person - React Native app  
+- **UI/UX Designer:** 1 person - interface design
+- **QA Engineer:** 1 person - testing and quality
 
-### 🎯 Roadmap розробки
+### 🎯 Development Roadmap
 
-| Фаза | Тривалість | Основні задачі |
-|------|------------|----------------|
-| **Phase 1: MVP** | 8-12 тижнів | Backend API, веб-додаток, базовий мобільний додаток |
-| **Phase 2: Enhanced** | 4-6 тижнів | Офлайн синхронізація, UX поліпшення, аналітика |
-| **Phase 3: Advanced** | 4-6 тижнів | Інтеграції, оптимізація, розширений функціонал |
+| Phase | Duration | Main Tasks |
+|-------|----------|------------|
+| **Phase 1: MVP** | 8-12 weeks | Backend API, web app, basic mobile app |
+| **Phase 2: Enhanced** | 4-6 weeks | Offline sync, UX improvements, analytics |
+| **Phase 3: Advanced** | 4-6 weeks | Integrations, optimization, extended features |
 
-### 📊 Корисні команди для розробників
+### 📊 Useful Developer Commands
 
 ```bash
-# Розробка окремих компонентів
-npm run backend:dev    # Backend у dev режимі
-npm run frontend:dev   # Frontend у dev режимі
+# Individual component development
+npm run backend:dev    # Backend in dev mode
+npm run frontend:dev   # Frontend in dev mode
 npm run mobile:dev     # React Native Metro bundler
 
-# Тестування
-npm run test          # Запуск всіх тестів
-npm run test:backend  # Backend тести
-npm run test:frontend # Frontend тести
+# Testing
+npm run test          # Run all tests
+npm run test:backend  # Backend tests
+npm run test:frontend # Frontend tests
 
-# Лінтинг та форматування
-npm run lint          # ESLint перевірка
-npm run lint:fix      # Автоправлення ESLint помилок
+# Linting and formatting
+npm run lint          # ESLint check
+npm run lint:fix      # Auto-fix ESLint errors
 
-# База даних
+# Database
 npm run db:studio     # Prisma Studio UI
-npm run db:reset      # Скидання бази даних
+npm run db:reset      # Reset database
 ```
 
-## 📈 Критерії успіху
+## 📈 Success Criteria
 
-| Метрика | Цільове значення |
-|---------|------------------|
-| ⚡ **API Response Time** | < 200ms (95% запитів) |
+| Metric | Target Value |
+|--------|--------------|
+| ⚡ **API Response Time** | < 200ms (95% requests) |
 | 🔄 **Sync Success Rate** | > 99% |
 | 📱 **Mobile Crash Rate** | < 0.1% |
 | 🔐 **System Uptime** | > 99.5% |
-| 📈 **Efficiency Improvement** | +30% координації |
-| 🎯 **GPS Accuracy** | < 5m (90% вимірювань) |
+| 📈 **Efficiency Improvement** | +30% coordination |
+| 🎯 **GPS Accuracy** | < 5m (90% measurements) |
 
 ## 🤝 Contributing
 
-1. Fork репозиторій
-2. Створіть feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit зміни (`git commit -m 'Add some AmazingFeature'`)
-4. Push до branch (`git push origin feature/AmazingFeature`)
-5. Відкрийте Pull Request
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open Pull Request
 
-## 📄 Ліцензія
+## 📄 License
 
-Цей проєкт розповсюджується під ліцензією MIT. Дивіться [LICENSE](LICENSE) для деталей.
+This project is distributed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## 📞 Контакти та підтримка
+## 📞 Contact & Support
 
 - 📧 **Email:** team@geodesy-app.com
-- 📚 **Документація:** [docs/](docs/)  
+- 📚 **Documentation:** [docs/](docs/)  
 - 🐛 **Issues:** [GitHub Issues](https://github.com/HarrySkySon/geidesy-team-app/issues)
 - 💬 **Discussions:** [GitHub Discussions](https://github.com/HarrySkySon/geidesy-team-app/discussions)
 
@@ -202,6 +202,6 @@ npm run db:reset      # Скидання бази даних
 
 <div align="center">
   
-**🌟 Зроблено з ❤️ для ефективної координації геодезичних робіт 🌟**
+**🌟 Made with ❤️ for efficient surveying coordination 🌟**
 
 </div>

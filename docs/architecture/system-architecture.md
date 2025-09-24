@@ -1,17 +1,17 @@
-# Архітектура системи управління геодезичними бригадами
+# Surveying Team Management System Architecture
 
-## Загальна архітектура
+## System Overview
 
 ```mermaid
 graph TB
-    subgraph "Користувачі"
-        U1[Керівник підрозділу]
-        U2[Геодезичні бригади]
+    subgraph "Users"
+        U1[Supervisor]
+        U2[Surveying Teams]
     end
     
     subgraph "Frontend"
-        WEB[Веб-додаток React.js]
-        MOB[Мобільний додаток React Native]
+        WEB[Web App React.js]
+        MOB[Mobile App React Native]
     end
     
     subgraph "Backend Services"
@@ -49,77 +49,77 @@ graph TB
     WEB --> MAPS
 ```
 
-## Компоненти системи
+## System Components
 
-### 1. Frontend (Веб-додаток керівника)
+### 1. Frontend (Supervisor Web App)
 
-**Технології:**
+**Technologies:**
 - React.js 18+ + TypeScript
-- Material-UI для UI компонентів
-- Leaflet для інтерактивних карт
-- Redux Toolkit для управління станом
+- Material-UI for UI components
+- Leaflet for interactive maps
+- Redux Toolkit for state management
 
-**Ключові модулі:**
+**Key modules:**
 ```typescript
 src/
-├── components/          # Переспроектні компоненти
-├── pages/              # Сторінки додатка
-├── store/              # Redux store та слайси
-├── services/           # API сервіси
+├── components/          # Reusable components
+├── pages/              # Application pages
+├── store/              # Redux store and slices
+├── services/           # API services
 ├── hooks/              # Custom React hooks
-├── utils/              # Утилітарні функції
-└── types/              # TypeScript типи
+├── utils/              # Utility functions
+└── types/              # TypeScript types
 ```
 
-### 2. Mobile (Мобільний додаток бригад)
+### 2. Mobile (Field Teams App)
 
-**Технології:**
+**Technologies:**
 - React Native 0.72+
-- React Navigation для навігації
-- React Native Maps для карт
-- WatermelonDB для офлайн зберігання
+- React Navigation for navigation
+- React Native Maps for maps
+- WatermelonDB for offline storage
 - Firebase Cloud Messaging
 
-**Архітектура:**
+**Architecture:**
 ```typescript
 src/
-├── screens/            # Екрани додатка
-├── components/         # Компоненти
-├── navigation/         # Навігаційна структура
-├── database/           # WatermelonDB моделі
-├── services/           # API та утилітарні сервіси
-├── store/              # Локальний стан
-└── utils/              # Допоміжні функції
+├── screens/            # App screens
+├── components/         # Components
+├── navigation/         # Navigation structure
+├── database/           # WatermelonDB models
+├── services/           # API and utility services
+├── store/              # Local state
+└── utils/              # Helper functions
 ```
 
 ### 3. Backend API
 
-**Технології:**
+**Technologies:**
 - Node.js + TypeScript
-- Express.js фреймворк
+- Express.js framework
 - Prisma ORM
-- JWT для автентифікації
-- WebSocket для real-time
+- JWT for authentication
+- WebSocket for real-time
 
-**Структура:**
+**Structure:**
 ```typescript
 src/
-├── controllers/        # HTTP контролери
-├── services/           # Бізнес логіка
-├── models/             # Prisma моделі
+├── controllers/        # HTTP controllers
+├── services/           # Business logic
+├── models/             # Prisma models
 ├── middleware/         # Express middleware
-├── routes/             # API роути
+├── routes/             # API routes
 ├── websocket/          # WebSocket handlers
-├── utils/              # Утилітарні функції
-└── types/              # TypeScript типи
+├── utils/              # Utility functions
+└── types/              # TypeScript types
 ```
 
-## База даних
+## Database
 
-### PostgreSQL + PostGIS схема
+### PostgreSQL + PostGIS Schema
 
 ```sql
--- Користувачі
+-- Users
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -131,7 +131,7 @@ CREATE TABLE users (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Бригади
+-- Teams
 CREATE TABLE teams (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
@@ -141,7 +141,7 @@ CREATE TABLE teams (
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Об'єкти з геопросторовими даними
+-- Sites with geospatial data
 CREATE TABLE sites (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(255) NOT NULL,
@@ -152,7 +152,7 @@ CREATE TABLE sites (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Завдання
+-- Tasks
 CREATE TABLE tasks (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     site_id UUID REFERENCES sites(id),
@@ -169,86 +169,86 @@ CREATE TABLE tasks (
     completed_at TIMESTAMPTZ
 );
 
--- Індекси для оптимізації
+-- Optimization indexes
 CREATE INDEX idx_sites_coordinates ON sites USING GIST (coordinates);
 CREATE INDEX idx_tasks_status ON tasks (status);
 CREATE INDEX idx_tasks_scheduled_date ON tasks (scheduled_date);
 CREATE INDEX idx_tasks_team_id ON tasks (team_id);
 ```
 
-## API специфікація
+## API Specification
 
-### Основні ендпоінти
+### Main Endpoints
 
 ```typescript
-// Автентифікація
-POST   /api/auth/login          # Вхід в систему
-POST   /api/auth/logout         # Вихід з системи
-POST   /api/auth/refresh        # Оновлення токена
+// Authentication
+POST   /api/auth/login          # System login
+POST   /api/auth/logout         # System logout
+POST   /api/auth/refresh        # Token refresh
 
-// Завдання
-GET    /api/tasks               # Список завдань
-GET    /api/tasks/:id           # Деталі завдання
-POST   /api/tasks               # Створення завдання
-PUT    /api/tasks/:id           # Оновлення завдання
-DELETE /api/tasks/:id           # Видалення завдання
+// Tasks
+GET    /api/tasks               # Task list
+GET    /api/tasks/:id           # Task details
+POST   /api/tasks               # Create task
+PUT    /api/tasks/:id           # Update task
+DELETE /api/tasks/:id           # Delete task
 
-// Звіти
-POST   /api/tasks/:id/reports   # Створення звіту
-PUT    /api/reports/:id         # Оновлення звіту
-POST   /api/reports/:id/files   # Завантаження файлів
+// Reports
+POST   /api/tasks/:id/reports   # Create report
+PUT    /api/reports/:id         # Update report
+POST   /api/reports/:id/files   # Upload files
 
-// Бригади
-GET    /api/teams               # Список бригад
-GET    /api/teams/:id/members   # Учасники бригади
-PUT    /api/teams/:id/location  # Оновлення локації
+// Teams
+GET    /api/teams               # Team list
+GET    /api/teams/:id/members   # Team members
+PUT    /api/teams/:id/location  # Update location
 
-// WebSocket події
-task:created                    # Нове завдання
-task:updated                    # Оновлення завдання
-team:location                   # Локація бригади
-notification:new                # Нове сповіщення
+// WebSocket events
+task:created                    # New task
+task:updated                    # Task update
+team:location                   # Team location
+notification:new                # New notification
 ```
 
-## Безпека
+## Security
 
-### Автентифікація та авторизація
-- JWT токени з коротким терміном дії (15 хв)
-- Refresh токени (7 днів)
+### Authentication & Authorization
+- JWT tokens with short lifespan (15 min)
+- Refresh tokens (7 days)
 - RBAC (Role-Based Access Control)
-- Rate limiting для API
+- API rate limiting
 
-### Шифрування
-- HTTPS/TLS 1.3 для всіх з'єднань
-- bcrypt для хешування паролів
-- Шифрування файлів в сховищі
+### Encryption
+- HTTPS/TLS 1.3 for all connections
+- bcrypt for password hashing
+- File encryption in storage
 
-### Валідація
-- Input validation на всіх рівнях
-- SQL injection захист через Prisma ORM
-- XSS захист через CSP headers
+### Validation
+- Input validation at all levels
+- SQL injection protection via Prisma ORM
+- XSS protection via CSP headers
 
-## Продуктивність
+## Performance
 
-### Кешування
-- Redis для сесій та часто використовуваних даних
-- Client-side кешування в браузері
-- CDN для статичних файлів
+### Caching
+- Redis for sessions and frequently used data
+- Client-side caching in browser
+- CDN for static files
 
-### База даних
-- Геопросторові індекси для швидкого пошуку
+### Database
+- Geospatial indexes for fast searches
 - Connection pooling
-- Database sharding при необхідності
+- Database sharding when needed
 
-### Моніторинг
+### Monitoring
 - Prometheus metrics
-- Grafana дашборди
-- ELK stack для логів
-- Health checks для всіх сервісів
+- Grafana dashboards
+- ELK stack for logs
+- Health checks for all services
 
-## Розгортання
+## Deployment
 
-### Docker контейнеризація
+### Docker Containerization
 ```yaml
 services:
   api:
@@ -267,19 +267,19 @@ services:
     image: redis:7-alpine
 ```
 
-### Середовища
-- **Development:** Локальний Docker Compose
+### Environments
+- **Development:** Local Docker Compose
 - **Staging:** AWS ECS / Google Cloud Run
-- **Production:** Kubernetes кластер
+- **Production:** Kubernetes cluster
 
-## Масштабованість
+## Scalability
 
-### Горизонтальне масштабування
-- Load balancer для API серверів
-- Database читання репліки
-- Microservices архітектура в майбутньому
+### Horizontal Scaling
+- Load balancer for API servers
+- Database read replicas
+- Microservices architecture in the future
 
-### Вертикальне масштабування
-- CPU/Memory оптимізація
+### Vertical Scaling
+- CPU/Memory optimization
 - Database tuning
-- Redis кластер для великих навантажень
+- Redis cluster for high loads

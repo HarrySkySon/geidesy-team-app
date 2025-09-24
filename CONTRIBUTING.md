@@ -1,49 +1,49 @@
-# Contributing до проєкту Geodesy Team App
+# Contributing to Surveying Team Management System
 
-Дякуємо за інтерес до участі у розробці системи управління геодезичними бригадами! 🎉
+Thank you for your interest in contributing to the Surveying Team Management System! 🎉
 
-## Як зробити свій внесок
+## How to Contribute
 
-### 🔧 Налаштування середовища розробки
+### 🔧 Setting Up Development Environment
 
-1. **Fork репозиторій**
+1. **Fork the repository**
    ```bash
    gh repo fork HarrySkySon/geidesy-team-app
    cd geidesy-team-app
    ```
 
-2. **Встановлення залежностей**
+2. **Install dependencies**
    ```bash
    npm run setup
    ```
 
-3. **Запуск у режимі розробки**
+3. **Start development mode**
    ```bash
    npm run dev
    ```
 
-### 📝 Процес розробки
+### 📝 Development Process
 
-1. **Створіть новий branch**
+1. **Create a new branch**
    ```bash
    git checkout -b feature/your-feature-name
-   # або
+   # or
    git checkout -b fix/your-fix-name
    ```
 
-2. **Внесіть зміни**
-   - Дотримуйтесь кодових стандартів проєкту
-   - Додайте тести для нового функціоналу
-   - Оновіть документацію при необхідності
+2. **Make your changes**
+   - Follow the project's coding standards
+   - Add tests for new functionality
+   - Update documentation when necessary
 
-3. **Перевірте якість коду**
+3. **Check code quality**
    ```bash
-   npm run lint      # Перевірка ESLint
-   npm run test      # Запуск тестів
-   npm run build     # Перевірка збірки
+   npm run lint      # ESLint check
+   npm run test      # Run tests
+   npm run build     # Check build
    ```
 
-4. **Commit змін**
+4. **Commit changes**
    ```bash
    git add .
    git commit -m "feat: add GPS tracking functionality"
@@ -54,16 +54,16 @@
    git push origin feature/your-feature-name
    ```
 
-6. **Створіть Pull Request**
-   - Використайте наш [PR template](.github/pull_request_template.md)
-   - Додайте детальний опис змін
-   - Прикріпіть screenshots для UI змін
+6. **Create Pull Request**
+   - Use our [PR template](.github/pull_request_template.md)
+   - Add detailed description of changes
+   - Include screenshots for UI changes
 
-## 📋 Стандарти коду
+## 📋 Code Standards
 
 ### Commit Messages
 
-Використовуємо [Conventional Commits](https://www.conventionalcommits.org/):
+We use [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
 <type>[optional scope]: <description>
@@ -73,17 +73,17 @@
 [optional footer(s)]
 ```
 
-**Типи commits:**
-- `feat`: нова функціональність
-- `fix`: виправлення багів
-- `docs`: зміни в документації
-- `style`: форматування коду
-- `refactor`: рефакторинг коду
-- `perf`: покращення продуктивності
-- `test`: додавання тестів
-- `chore`: технічні зміни
+**Commit types:**
+- `feat`: new functionality
+- `fix`: bug fixes
+- `docs`: documentation changes
+- `style`: code formatting
+- `refactor`: code refactoring
+- `perf`: performance improvements
+- `test`: adding tests
+- `chore`: technical changes
 
-**Приклади:**
+**Examples:**
 ```bash
 feat(mobile): add GPS tracking for team location
 fix(backend): resolve database connection timeout
@@ -92,97 +92,97 @@ docs(readme): update installation instructions
 
 ### Code Style
 
-- **TypeScript** для всіх компонентів
-- **ESLint** + **Prettier** для форматування
-- **Функціональні компоненти** з hooks для React
-- **Async/await** замість promises
-- **Описові назви** змінних та функцій
+- **TypeScript** for all components
+- **ESLint** + **Prettier** for formatting
+- **Functional components** with hooks for React
+- **Async/await** instead of promises
+- **Descriptive names** for variables and functions
 
 ### Testing
 
 - **Unit tests**: Jest + React Testing Library
-- **Integration tests**: Supertest для API
-- **E2E tests**: Detox для мобільного додатка
-- **Мінімальне покриття**: 80%
+- **Integration tests**: Supertest for API
+- **E2E tests**: Detox for mobile app
+- **Minimum coverage**: 80%
 
-## 🐛 Повідомлення про баги
+## 🐛 Bug Reports
 
-Використовуйте [Bug Report template](.github/ISSUE_TEMPLATE/bug_report.md):
+Use the [Bug Report template](.github/ISSUE_TEMPLATE/bug_report.md):
 
-1. **Опис проблеми** - чіткий опис що сталося
-2. **Кроки для відтворення** - покрокова інструкція
-3. **Очікувана поведінка** - що мало б статися
-4. **Скріншоти** - якщо застосовно
-5. **Середовище** - OS, версія додатка, браузер
+1. **Problem description** - clear description of what happened
+2. **Steps to reproduce** - step-by-step instructions
+3. **Expected behavior** - what should have happened
+4. **Screenshots** - if applicable
+5. **Environment** - OS, app version, browser
 
-## 💡 Пропозиції функціональності
+## 💡 Feature Requests
 
-Використовуйте [Feature Request template](.github/ISSUE_TEMPLATE/feature_request.md):
+Use the [Feature Request template](.github/ISSUE_TEMPLATE/feature_request.md):
 
-1. **Проблема** - яку проблему вирішує фіча
-2. **Рішення** - детальний опис пропозиції
-3. **Альтернативи** - інші варіанти вирішення
-4. **Додатковий контекст** - скріншоти, посилання
+1. **Problem** - what problem does the feature solve
+2. **Solution** - detailed description of the proposal
+3. **Alternatives** - other solution options
+4. **Additional context** - screenshots, links
 
-## 🏗️ Структура проєкту
+## 🏗️ Project Structure
 
 ### Backend (`/backend`)
-- **Controllers** - HTTP обробники запитів
-- **Services** - бізнес логіка
-- **Models** - Prisma моделі БД
+- **Controllers** - HTTP request handlers
+- **Services** - business logic
+- **Models** - Prisma DB models
 - **Middleware** - Express middleware
-- **Routes** - API маршрути
+- **Routes** - API routes
 
 ### Frontend (`/frontend`)
-- **Components** - React компоненти
-- **Pages** - сторінки додатка
+- **Components** - React components
+- **Pages** - application pages
 - **Store** - Redux Toolkit state
-- **Services** - API клієнти
+- **Services** - API clients
 - **Hooks** - custom React hooks
 
 ### Mobile (`/mobile`)
-- **Screens** - екрани React Native
-- **Components** - переспроектні компоненти
-- **Navigation** - навігаційна структура
-- **Database** - WatermelonDB моделі
-- **Services** - API та утилітарні сервіси
+- **Screens** - React Native screens
+- **Components** - reusable components
+- **Navigation** - navigation structure
+- **Database** - WatermelonDB models
+- **Services** - API and utility services
 
 ## 🔍 Code Review Process
 
-### Для reviewers:
-1. **Функціональність** - чи працює як очікується?
-2. **Код якість** - читабельність, підтримуваність
-3. **Тести** - достатнє покриття тестами
-4. **Документація** - оновлена при необхідності
-5. **Продуктивність** - немає performance регресій
+### For reviewers:
+1. **Functionality** - does it work as expected?
+2. **Code quality** - readability, maintainability
+3. **Tests** - adequate test coverage
+4. **Documentation** - updated when necessary
+5. **Performance** - no performance regressions
 
-### Для авторів PR:
-- **Self-review** перед створенням PR
-- **Описові коментарі** для складної логіки
-- **Маленькі PR** - легше для review
-- **Отзивчивість** на коментарі reviewers
+### For PR authors:
+- **Self-review** before creating PR
+- **Descriptive comments** for complex logic
+- **Small PRs** - easier to review
+- **Responsiveness** to reviewer comments
 
-## 📚 Ресурси
+## 📚 Resources
 
-- [Технічна документація](docs/architecture/)
-- [API документація](docs/api/)
-- [План розробки](docs/planning/development-plan.md)
+- [Technical Documentation](docs/architecture/)
+- [API Documentation](docs/api/)
+- [Development Plan](docs/planning/development-plan.md)
 - [Coding Standards](docs/development/coding-standards.md)
 
-## 🤝 Спільнота
+## 🤝 Community
 
-- **GitHub Discussions** для питань та ідей
-- **Issues** для багів та фіч
-- **Email** team@geodesy-app.com для приватних питань
+- **GitHub Discussions** for questions and ideas
+- **Issues** for bugs and features
+- **Email** team@geodesy-app.com for private inquiries
 
-## ❓ Потрібна допомога?
+## ❓ Need Help?
 
-Не соромтеся ставити питання! Ми завжди готові допомогти новим contributors:
+Don't hesitate to ask questions! We're always ready to help new contributors:
 
-- Створіть **Discussion** з тегом `question`
-- Напишіть у **Issue** з тегом `help wanted`
-- Зверніться до maintainers через email
+- Create a **Discussion** with `question` tag
+- Write in **Issue** with `help wanted` tag
+- Contact maintainers via email
 
 ---
 
-Дякуємо за ваш внесок у розвиток системи управління геодезичними бригадами! 🙏
+Thank you for your contribution to the Surveying Team Management System development! 🙏
