@@ -1,23 +1,23 @@
 version: '3.8'
 
 services:
-  # PostgreSQL з PostGIS для геопросторових даних
+  # PostgreSQL with PostGIS for geospatial data
   postgres:
     image: postgis/postgis:15-3.3
-    container_name: geodesy_postgres
+    container_name: surveying_postgres
     environment:
-      POSTGRES_DB: geodesy_db
-      POSTGRES_USER: geodesy_user
-      POSTGRES_PASSWORD: geodesy_password
+      POSTGRES_DB: surveying_db
+      POSTGRES_USER: surveying_user
+      POSTGRES_PASSWORD: surveying_password
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/schemas:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
     networks:
-      - geodesy_network
+      - surveying_network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U geodesy_user -d geodesy_db"]
+      test: ["CMD-SHELL", "pg_isready -U surveying_user -d surveying_db"]
       interval: 10s
       timeout: 5s
       retries: 5

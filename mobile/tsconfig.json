@@ -1,0 +1,27 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["./*"],
+      "@screens/*": ["./screens/*"],
+      "@components/*": ["./components/*"],
+      "@navigation/*": ["./navigation/*"],
+      "@services/*": ["./services/*"],
+      "@store/*": ["./store/*"],
+      "@utils/*": ["./utils/*"],
+      "@types/*": ["./types/*"],
+      "@database/*": ["./database/*"]
+    },
+    "experimentalDecorators": true
+  },
+  "include": [
+    "src/**/*",
+    "*.ts",
+    "*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
