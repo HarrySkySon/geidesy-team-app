@@ -1,0 +1,158 @@
+groups:
+  - name: surveying-team-alerts
+    interval: 30s
+    rules:
+      # Service availability alerts
+      - alert: ServiceDown
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Service {{ $labels.job }} is down"
+          description: "Service {{ $labels.job }} has been down for more than 5 minutes"
+
+      # High error rate
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m])) by (job) /
+            sum(rate(http_requests_total[5m])) by (job)
+          ) * 100 > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value }}% for {{ $labels.job }}"
+
+      # High response time
+      - alert: HighResponseTime
+        expr: |
+          histogram_quantile(0.95,
+            sum(rate(http_request_duration_seconds_bucket[5m])) by (le)
+          ) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value }}s"
+
+      # Database connection issues
+      - alert: DatabaseConnectionHigh
+        expr: pg_stat_database_numbackends > 50
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High database connection count"
+          description: "Database has {{ $value }} active connections"
+
+      # Memory usage alerts
+      - alert: HighMemoryUsage
+        expr: |
+          (
+            container_memory_usage_bytes / 
+            container_spec_memory_limit_bytes
+          ) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "Container {{ $labels.name }} memory usage is {{ $value }}%"
+
+      # Disk space alerts
+      - alert: LowDiskSpace
+        expr: |
+          (
+            node_filesystem_avail_bytes{mountpoint="/"} / 
+            node_filesystem_size_bytes{mountpoint="/"}
+          ) * 100 < 20
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space"
+          description: "Disk space is {{ $value }}% available"
+
+      # SSL certificate expiration
+      - alert: SSLCertificateExpiringSoon
+        expr: ssl_cert_not_after - time() < 86400 * 30
+        for: 1h
+        labels:
+          severity: warning
+        annotations:
+          summary: "SSL certificate expiring soon"
+          description: "SSL certificate for {{ $labels.instance }} expires in {{ $value }} days"
+
+      # Redis connection issues
+      - alert: RedisDown
+        expr: redis_up == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Redis is down"
+          description: "Redis instance {{ $labels.instance }} is not responding"
+
+      # File upload issues
+      - alert: HighFileUploadFailureRate
+        expr: |
+          (
+            sum(rate(file_upload_failures_total[5m])) /
+            sum(rate(file_upload_attempts_total[5m]))
+          ) * 100 > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High file upload failure rate"
+          description: "File upload failure rate is {{ $value }}%"
+
+      # WebSocket connection issues
+      - alert: LowWebSocketConnections
+        expr: websocket_connections_total < 1
+        for: 15m
+        labels:
+          severity: info
+        annotations:
+          summary: "No active WebSocket connections"
+          description: "No users are currently connected via WebSocket"
+
+  - name: business-metrics-alerts
+    interval: 60s
+    rules:
+      # Task creation rate
+      - alert: LowTaskCreationRate
+        expr: |
+          sum(increase(task_operations_total{operation="create"}[1h])) < 5
+        for: 2h
+        labels:
+          severity: info
+        annotations:
+          summary: "Low task creation rate"
+          description: "Only {{ $value }} tasks created in the last hour"
+
+      # User activity
+      - alert: LowUserActivity
+        expr: |
+          sum(increase(user_login_total[1h])) < 2
+        for: 2h
+        labels:
+          severity: info
+        annotations:
+          summary: "Low user activity"
+          description: "Only {{ $value }} user logins in the last hour"
+
+      # Data sync issues
+      - alert: DataSyncFailures
+        expr: |
+          sum(increase(sync_failures_total[1h])) > 5
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Data synchronization failures"
+          description: "{{ $value }} sync failures detected in the last hour"

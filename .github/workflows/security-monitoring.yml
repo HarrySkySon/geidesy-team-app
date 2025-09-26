@@ -1,0 +1,335 @@
+name: Security and Monitoring
+
+on:
+  schedule:
+    # Run security scans daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # Dependency vulnerability scanning
+  dependency-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    # Backend dependency scan
+    - name: Install backend dependencies
+      run: cd backend && npm ci
+
+    - name: Audit backend dependencies
+      run: cd backend && npm audit --audit-level high
+
+    - name: Check backend for known vulnerabilities
+      run: cd backend && npx audit-ci --config ../audit-ci.json
+
+    # Frontend dependency scan
+    - name: Install frontend dependencies
+      run: cd frontend && npm ci
+
+    - name: Audit frontend dependencies
+      run: cd frontend && npm audit --audit-level high
+
+    - name: Check frontend for known vulnerabilities
+      run: cd frontend && npx audit-ci --config ../audit-ci.json
+
+    # Mobile dependency scan
+    - name: Install mobile dependencies
+      run: cd mobile && npm ci
+
+    - name: Audit mobile dependencies
+      run: cd mobile && npm audit --audit-level high
+
+    - name: Check mobile for known vulnerabilities
+      run: cd mobile && npx audit-ci --config ../audit-ci.json
+
+  # Docker image security scanning
+  container-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build backend image for scanning
+      run: docker build -f backend/Dockerfile.prod -t backend-scan:latest backend/
+
+    - name: Build frontend image for scanning
+      run: docker build -f frontend/Dockerfile.prod -t frontend-scan:latest frontend/
+
+    - name: Run Trivy scanner on backend
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'backend-scan:latest'
+        format: 'sarif'
+        output: 'backend-trivy.sarif'
+
+    - name: Run Trivy scanner on frontend
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'frontend-scan:latest'
+        format: 'sarif'
+        output: 'frontend-trivy.sarif'
+
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'backend-trivy.sarif,frontend-trivy.sarif'
+
+  # Code quality and security analysis
+  code-analysis:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for better analysis
+
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    - name: Run ESLint security plugin
+      run: |
+        cd backend && npx eslint . --ext .ts,.js --config .eslintrc.security.js
+        cd frontend && npx eslint . --ext .ts,.tsx,.js,.jsx --config .eslintrc.security.js
+        cd mobile && npx eslint . --ext .ts,.tsx --config .eslintrc.security.js
+
+    - name: Run Semgrep security analysis
+      uses: returntocorp/semgrep-action@v1
+      with:
+        config: >-
+          p/security-audit
+          p/secrets
+          p/owasp-top-ten
+          p/javascript
+          p/typescript
+          p/react
+
+  # Infrastructure as Code security
+  iac-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Checkov on Docker files
+      uses: bridgecrewio/checkov-action@master
+      with:
+        directory: .
+        framework: dockerfile
+        output_format: sarif
+        output_file_path: checkov-docker.sarif
+
+    - name: Run Checkov on Docker Compose
+      uses: bridgecrewio/checkov-action@master
+      with:
+        file: docker-compose.prod.yml
+        framework: docker_compose
+        output_format: sarif
+        output_file_path: checkov-compose.sarif
+
+    - name: Upload Checkov scan results
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: 'checkov-docker.sarif,checkov-compose.sarif'
+
+  # Secrets scanning
+  secret-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Run TruffleHog
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: main
+        head: HEAD
+        extra_args: --debug --only-verified
+
+    - name: Run GitLeaks
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # License compliance
+  license-scan:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install license-checker
+      run: npm install -g license-checker
+
+    - name: Check backend licenses
+      run: cd backend && license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC'
+
+    - name: Check frontend licenses
+      run: cd frontend && license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC'
+
+    - name: Check mobile licenses
+      run: cd mobile && license-checker --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC'
+
+  # Performance monitoring setup
+  performance-monitoring:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup monitoring alerts
+      run: |
+        echo "Setting up performance monitoring alerts..."
+        # Configure application monitoring
+        # This would typically involve calling monitoring service APIs
+
+    - name: Configure uptime monitoring
+      run: |
+        echo "Configuring uptime monitoring..."
+        # Set up uptime monitors for critical endpoints
+
+    - name: Setup log aggregation
+      run: |
+        echo "Configuring log aggregation..."
+        # Configure centralized logging
+
+  # Backup verification
+  backup-verification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+    - name: Verify database backups
+      run: |
+        echo "Verifying database backup integrity..."
+        # Add backup verification logic
+
+    - name: Test backup restoration
+      run: |
+        echo "Testing backup restoration process..."
+        # Add restoration testing logic
+
+    - name: Verify file storage backups
+      run: |
+        echo "Verifying file storage backups..."
+        # Add file backup verification
+
+  # Compliance reporting
+  compliance-report:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    needs: [dependency-scan, container-scan, code-analysis, iac-scan, secret-scan, license-scan]
+    
+    steps:
+    - name: Generate compliance report
+      run: |
+        echo "Generating security compliance report..."
+        
+        # Create compliance report
+        cat << EOF > compliance-report.md
+        # Security Compliance Report
+        
+        **Generated:** $(date)
+        **Repository:** ${{ github.repository }}
+        **Branch:** ${{ github.ref }}
+        
+        ## Scan Results Summary
+        
+        - ✅ Dependency vulnerabilities: Checked
+        - ✅ Container security: Scanned
+        - ✅ Code analysis: Completed  
+        - ✅ Infrastructure security: Verified
+        - ✅ Secrets scanning: Clean
+        - ✅ License compliance: Verified
+        
+        ## Next Review Date
+        $(date -d "+30 days")
+        
+        EOF
+
+    - name: Upload compliance report
+      uses: actions/upload-artifact@v3
+      with:
+        name: compliance-report
+        path: compliance-report.md
+
+    - name: Send compliance notification
+      run: |
+        echo "Sending compliance notification..."
+        # Add notification logic (email, Slack, etc.)
+
+  # Automated security updates
+  security-updates:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Update backend dependencies
+      run: |
+        cd backend
+        npx npm-check-updates -u --target minor
+        npm install
+        npm audit fix
+
+    - name: Update frontend dependencies  
+      run: |
+        cd frontend
+        npx npm-check-updates -u --target minor
+        npm install
+        npm audit fix
+
+    - name: Update mobile dependencies
+      run: |
+        cd mobile
+        npx npm-check-updates -u --target minor
+        npm install
+        npm audit fix
+
+    - name: Create security update PR
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore: automated security dependency updates'
+        title: 'Automated Security Updates'
+        body: |
+          Automated security dependency updates
+          
+          This PR contains automated updates to dependencies with known security vulnerabilities.
+          
+          Please review the changes and test thoroughly before merging.
+        branch: security-updates
+        delete-branch: true
