@@ -37,7 +37,7 @@ export class AuthController {
     // Validate request
     const { error, value } = registerSchema.validate(req.body);
     if (error) {
-      throw createError(error.details[0].message, 400);
+      throw createError(error.details[0]?.message || 'Validation error', 400);
     }
 
     const result = await authService.register(value);
@@ -53,7 +53,7 @@ export class AuthController {
     // Validate request
     const { error, value } = loginSchema.validate(req.body);
     if (error) {
-      throw createError(error.details[0].message, 400);
+      throw createError(error.details[0]?.message || 'Validation error', 400);
     }
 
     const result = await authService.login(value);
@@ -122,7 +122,7 @@ export class AuthController {
   async forgotPassword(req: Request, res: Response) {
     const { error, value } = forgotPasswordSchema.validate(req.body);
     if (error) {
-      throw createError(error.details[0].message, 400);
+      throw createError(error.details[0]?.message || 'Validation error', 400);
     }
 
     const result = await authService.forgotPassword(value.email);
@@ -136,7 +136,7 @@ export class AuthController {
   async resetPassword(req: Request, res: Response) {
     const { error, value } = resetPasswordSchema.validate(req.body);
     if (error) {
-      throw createError(error.details[0].message, 400);
+      throw createError(error.details[0]?.message || 'Validation error', 400);
     }
 
     const result = await authService.resetPassword(value.token, value.newPassword);
@@ -154,7 +154,7 @@ export class AuthController {
 
     const { error, value } = changePasswordSchema.validate(req.body);
     if (error) {
-      throw createError(error.details[0].message, 400);
+      throw createError(error.details[0]?.message || 'Validation error', 400);
     }
 
     const result = await authService.changePassword(

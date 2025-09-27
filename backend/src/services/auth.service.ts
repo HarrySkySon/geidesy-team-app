@@ -26,15 +26,17 @@ interface TokenPayload {
 
 export class AuthService {
   private generateTokens(payload: TokenPayload) {
+    const jwtSecret = process.env.JWT_SECRET || 'default-secret-key';
+    
     const accessToken = jwt.sign(
       payload,
-      process.env.JWT_SECRET!,
+      jwtSecret,
       { expiresIn: process.env.JWT_EXPIRES_IN || '15m' }
     );
 
     const refreshToken = jwt.sign(
       payload,
-      process.env.JWT_SECRET!,
+      jwtSecret,
       { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d' }
     );
 
@@ -161,7 +163,7 @@ export class AuthService {
   async refreshToken(refreshToken: string) {
     try {
       // Verify refresh token
-      const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET!) as TokenPayload;
+      const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET || 'default-secret-key') as TokenPayload;
 
       // Check if refresh token exists in database
       const storedToken = await prisma.refreshToken.findUnique({
@@ -224,7 +226,7 @@ export class AuthService {
     // Generate reset token (in real app, you'd send email)
     const resetToken = jwt.sign(
       { id: user.id, email: user.email },
-      process.env.JWT_SECRET!,
+      process.env.JWT_SECRET || 'default-secret-key',
       { expiresIn: '1h' }
     );
 
@@ -236,7 +238,7 @@ export class AuthService {
 
   async resetPassword(token: string, newPassword: string) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
+      const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default-secret-key') as { id: string };
       
       const hashedPassword = await bcrypt.hash(newPassword, 12);
 

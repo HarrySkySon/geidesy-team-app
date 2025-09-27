@@ -1,8 +1,57 @@
-# 🗺️ Surveying Team Management System
+# 🌍 Geodesy Team Management System
+
+Повнофункціональна система управління командами геодезистів та завданнями з мобільним додатком та веб-інтерфейсом.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/react-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)](https://reactjs.org/)
+
+## 🚀 Швидкий старт
+
+### Автоматичний запуск (рекомендовано)
+```bash
+node start-development.js
+```
+
+### Ручний запуск служб
+```bash
+# Terminal 1 - Backend API
+cd backend
+node test-server.js
+
+# Terminal 2 - Frontend Web App
+cd frontend
+npm run dev
+
+# Terminal 3 - Mobile App
+cd mobile
+npx expo start --port 19007
+```
+
+## 🌐 Доступ до системи
+
+| Сервіс | URL | Опис |
+|--------|-----|------|
+| **Backend API** | http://localhost:3000 | REST API сервер |
+| **Web App** | http://localhost:3004 | Веб-застосування |
+| **Mobile App** | http://localhost:19007 | Мобільний додаток |
+| **Health Check** | http://localhost:3000/health | Статус API |
+
+## 🔐 Тестові облікові записи
+
+```
+Адміністратор:
+Email: admin@geodesy.com
+Password: password123
+
+Супервайзер:
+Email: supervisor@geodesy.com
+Password: password123
+
+Учасник команди:
+Email: member1@geodesy.com
+Password: password123
+```
 [![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=flat&logo=react&logoColor=%2361DAFB)](https://reactnative.dev/)
 [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![PostgreSQL](https://img.shields.io/badge/postgres-%23316192.svg?style=flat&logo=postgresql&logoColor=white)](https://www.postgresql.org/)

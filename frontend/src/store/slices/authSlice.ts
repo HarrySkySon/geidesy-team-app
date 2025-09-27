@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { authService, User, LoginRequest, RegisterRequest } from '@services/auth.service';
+import { authService } from '@services/auth.service';
+import { User, LoginForm, AuthResponse } from '@types/api';
 
 // Auth state interface
 export interface AuthState {
@@ -12,17 +13,17 @@ export interface AuthState {
 
 // Initial state
 const initialState: AuthState = {
-  user: authService.getStoredUser(),
+  user: authService.getCurrentUser(),
   isAuthenticated: authService.isAuthenticated(),
   isLoading: false,
   error: null,
-  accessToken: authService.getAccessToken(),
+  accessToken: authService.getToken(),
 };
 
 // Async thunks
 export const loginUser = createAsyncThunk(
   'auth/login',
-  async (credentials: LoginRequest, { rejectWithValue }) => {
+  async (credentials: LoginForm, { rejectWithValue }) => {
     try {
       const response = await authService.login(credentials);
       return response;
@@ -34,7 +35,13 @@ export const loginUser = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   'auth/register',
-  async (userData: RegisterRequest, { rejectWithValue }) => {
+  async (userData: {
+    email: string;
+    password: string;
+    name: string;
+    phone?: string;
+    role: 'ADMIN' | 'SUPERVISOR' | 'TEAM_MEMBER';
+  }, { rejectWithValue }) => {
     try {
       const response = await authService.register(userData);
       return response;
@@ -56,23 +63,26 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-export const refreshToken = createAsyncThunk(
+export const refreshTokenAsync = createAsyncThunk(
   'auth/refreshToken',
   async (_, { rejectWithValue }) => {
     try {
-      const newToken = await authService.refreshToken();
-      return { accessToken: newToken };
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (!refreshToken) throw new Error('No refresh token');
+      const response = await authService.refreshToken(refreshToken);
+      return response;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Token refresh failed');
     }
   }
 );
 
-export const getCurrentUser = createAsyncThunk(
-  'auth/getCurrentUser',
+export const getCurrentUserAsyncAsync = createAsyncThunk(
+  'auth/getCurrentUserAsync',
   async (_, { rejectWithValue }) => {
     try {
-      const user = await authService.getCurrentUser();
+      const user = authService.getCurrentUserAsync();
+      if (!user) throw new Error('No user data');
       return user;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to get user data');
@@ -208,11 +218,11 @@ const authSlice = createSlice({
 
     // Refresh token
     builder
-      .addCase(refreshToken.fulfilled, (state, action) => {
+      .addCase(refreshTokenAsync.fulfilled, (state, action) => {
         state.accessToken = action.payload.accessToken;
         state.isAuthenticated = true;
       })
-      .addCase(refreshToken.rejected, (state) => {
+      .addCase(refreshTokenAsync.rejected, (state) => {
         state.isAuthenticated = false;
         state.user = null;
         state.accessToken = null;
@@ -220,16 +230,16 @@ const authSlice = createSlice({
 
     // Get current user
     builder
-      .addCase(getCurrentUser.pending, (state) => {
+      .addCase(getCurrentUserAsync.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getCurrentUser.fulfilled, (state, action) => {
+      .addCase(getCurrentUserAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = null;
       })
-      .addCase(getCurrentUser.rejected, (state, action) => {
+      .addCase(getCurrentUserAsync.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
