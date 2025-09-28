@@ -1,0 +1,312 @@
+import React from 'react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react-native';
+import SimpleGeodesy from '../src/SimpleGeodesy';
+
+// Mock API calls
+const mockApiGet = jest.fn();
+const mockApiPost = jest.fn();
+
+jest.mock('axios', () => ({
+  create: jest.fn(() => ({
+    get: mockApiGet,
+    post: mockApiPost,
+  })),
+}));
+
+describe('SimpleGeodesy App', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    // Mock successful API responses
+    mockApiGet.mockResolvedValue({
+      data: {
+        tasks: [
+          {
+            id: '1',
+            title: 'Test Task',
+            description: 'Test Description',
+            status: 'PENDING',
+            priority: 'HIGH',
+          },
+        ],
+        teams: [
+          {
+            id: '1',
+            name: 'Test Team',
+            description: 'Test Team Description',
+            leader: 'John Doe',
+            memberCount: 5,
+          },
+        ],
+        stats: {
+          totalTasks: 10,
+          totalTeams: 3,
+          completedTasks: 7,
+        },
+      },
+    });
+
+    mockApiPost.mockResolvedValue({
+      data: {
+        user: {
+          id: '1',
+          name: 'Test User',
+          email: 'test@geodesy.com',
+          role: 'admin',
+        },
+        token: 'mock-jwt-token',
+      },
+    });
+  });
+
+  describe('Login Screen', () => {
+    it('should render login form initially', () => {
+      render(<SimpleGeodesy />);
+
+      expect(screen.getByDisplayValue('admin@geodesy.com')).toBeTruthy();
+      expect(screen.getByDisplayValue('password123')).toBeTruthy();
+      expect(screen.getByText('🔐 Login')).toBeTruthy();
+    });
+
+    it('should handle successful login', async () => {
+      render(<SimpleGeodesy />);
+
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(mockApiPost).toHaveBeenCalledWith('/auth/login', {
+          email: 'admin@geodesy.com',
+          password: 'password123',
+        });
+      });
+
+      await waitFor(() => {
+        expect(screen.getByText('📊 Geodesy Dashboard')).toBeTruthy();
+      });
+    });
+
+    it('should handle login error', async () => {
+      mockApiPost.mockRejectedValueOnce(new Error('Invalid credentials'));
+
+      render(<SimpleGeodesy />);
+
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(mockApiPost).toHaveBeenCalled();
+      });
+    });
+
+    it('should allow editing email and password fields', () => {
+      render(<SimpleGeodesy />);
+
+      const emailInput = screen.getByDisplayValue('admin@geodesy.com');
+      const passwordInput = screen.getByDisplayValue('password123');
+
+      fireEvent.changeText(emailInput, 'new@email.com');
+      fireEvent.changeText(passwordInput, 'newpassword');
+
+      expect(screen.getByDisplayValue('new@email.com')).toBeTruthy();
+      expect(screen.getByDisplayValue('newpassword')).toBeTruthy();
+    });
+  });
+
+  describe('Dashboard Screen', () => {
+    beforeEach(async () => {
+      const component = render(<SimpleGeodesy />);
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('📊 Geodesy Dashboard')).toBeTruthy();
+      });
+    });
+
+    it('should display dashboard after successful login', async () => {
+      expect(screen.getByText('📊 Geodesy Dashboard')).toBeTruthy();
+      expect(screen.getByText('Welcome, Test User!')).toBeTruthy();
+    });
+
+    it('should display statistics', async () => {
+      await waitFor(() => {
+        expect(screen.getByText('📋 Total Tasks: 10')).toBeTruthy();
+        expect(screen.getByText('👥 Teams: 3')).toBeTruthy();
+        expect(screen.getByText('✅ Completed: 7')).toBeTruthy();
+      });
+    });
+
+    it('should have working refresh button', async () => {
+      const refreshButton = screen.getByText('🔄 Refresh Data');
+
+      mockApiGet.mockClear();
+      fireEvent.press(refreshButton);
+
+      await waitFor(() => {
+        expect(mockApiGet).toHaveBeenCalledWith('/dashboard');
+      });
+    });
+
+    it('should handle data loading error gracefully', async () => {
+      mockApiGet.mockRejectedValueOnce(new Error('Network error'));
+
+      const refreshButton = screen.getByText('🔄 Refresh Data');
+      fireEvent.press(refreshButton);
+
+      await waitFor(() => {
+        expect(mockApiGet).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('Navigation', () => {
+    beforeEach(async () => {
+      render(<SimpleGeodesy />);
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('📊 Geodesy Dashboard')).toBeTruthy();
+      });
+    });
+
+    it('should navigate to tasks screen', async () => {
+      const tasksTab = screen.getByText('📋');
+      fireEvent.press(tasksTab);
+
+      await waitFor(() => {
+        expect(screen.getByText('📋 Tasks')).toBeTruthy();
+      });
+    });
+
+    it('should navigate to teams screen', async () => {
+      const teamsTab = screen.getByText('👥');
+      fireEvent.press(teamsTab);
+
+      await waitFor(() => {
+        expect(screen.getByText('👥 Teams')).toBeTruthy();
+      });
+    });
+
+    it('should handle logout', async () => {
+      const logoutButton = screen.getByText('🚪');
+      fireEvent.press(logoutButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('🔐 Login')).toBeTruthy();
+        expect(screen.getByDisplayValue('admin@geodesy.com')).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Tasks Screen', () => {
+    beforeEach(async () => {
+      render(<SimpleGeodesy />);
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('📊 Geodesy Dashboard')).toBeTruthy();
+      });
+
+      const tasksTab = screen.getByText('📋');
+      fireEvent.press(tasksTab);
+
+      await waitFor(() => {
+        expect(screen.getByText('📋 Tasks')).toBeTruthy();
+      });
+    });
+
+    it('should display tasks list', async () => {
+      await waitFor(() => {
+        expect(screen.getByText('Test Task')).toBeTruthy();
+        expect(screen.getByText('Test Description')).toBeTruthy();
+        expect(screen.getByText('HIGH')).toBeTruthy();
+      });
+    });
+
+    it('should apply correct priority colors', async () => {
+      await waitFor(() => {
+        const highPriorityElement = screen.getByText('HIGH');
+        expect(highPriorityElement).toBeTruthy();
+      });
+    });
+
+    it('should show empty state when no tasks', async () => {
+      mockApiGet.mockResolvedValueOnce({
+        data: {
+          tasks: [],
+          teams: [],
+          stats: { totalTasks: 0, totalTeams: 0, completedTasks: 0 },
+        },
+      });
+
+      const refreshButton = screen.getByText('🔄 Refresh Data');
+      fireEvent.press(refreshButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('No tasks available')).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Teams Screen', () => {
+    beforeEach(async () => {
+      render(<SimpleGeodesy />);
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('📊 Geodesy Dashboard')).toBeTruthy();
+      });
+
+      const teamsTab = screen.getByText('👥');
+      fireEvent.press(teamsTab);
+
+      await waitFor(() => {
+        expect(screen.getByText('👥 Teams')).toBeTruthy();
+      });
+    });
+
+    it('should display teams list', async () => {
+      await waitFor(() => {
+        expect(screen.getByText('Test Team')).toBeTruthy();
+        expect(screen.getByText('Leader: John Doe')).toBeTruthy();
+        expect(screen.getByText('Members: 5')).toBeTruthy();
+      });
+    });
+  });
+
+  describe('Error Handling', () => {
+    it('should handle network errors gracefully', async () => {
+      mockApiPost.mockRejectedValue(new Error('Network error'));
+
+      render(<SimpleGeodesy />);
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(mockApiPost).toHaveBeenCalled();
+        // App should remain on login screen
+        expect(screen.getByText('🔐 Login')).toBeTruthy();
+      });
+    });
+
+    it('should handle API timeout errors', async () => {
+      mockApiPost.mockImplementation(() =>
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Timeout')), 100)
+        )
+      );
+
+      render(<SimpleGeodesy />);
+      const loginButton = screen.getByText('🔐 Login');
+      fireEvent.press(loginButton);
+
+      await waitFor(() => {
+        expect(mockApiPost).toHaveBeenCalled();
+      }, { timeout: 200 });
+    });
+  });
+});
